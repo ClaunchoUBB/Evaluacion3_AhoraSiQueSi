@@ -19,11 +19,23 @@ import java.util.Optional;
 
 @Service
 public class CotizacionService {
-    @Autowired
-    private CotizacionRepository cotizacionRepo;
+    // 1. Declarar los campos como final (buena práctica)
+    private final CotizacionRepository cotizacionRepo;
+    private final MuebleRepository muebleRepo;
+    private final VariantesRepository variantesRepo;
+    private final PrecioStrategy precioStrategy; // Usaremos esta en lugar de crear una nueva en el método
 
-    private MuebleRepository muebleRepo;
-    private VariantesRepository variantesRepo;
+    // 2. CONSTRUCTOR PARA INYECTAR TODAS LAS DEPENDENCIAS (¡ESTO RESUELVE EL NULLPOINTER!)
+    @Autowired
+    public CotizacionService(CotizacionRepository cotizacionRepo,
+                             MuebleRepository muebleRepo,
+                             VariantesRepository variantesRepo) {
+        this.cotizacionRepo = cotizacionRepo;
+        this.muebleRepo = muebleRepo;       // <-- ¡INICIALIZADO!
+        this.variantesRepo = variantesRepo; // <-- ¡INICIALIZADO!
+        // Inicializar la estrategia
+        this.precioStrategy = new PrecioNormalStrategy();
+    }
 
     public List<Cotizacion> getAllCotizaciones() {
         return cotizacionRepo.findAll();
@@ -37,12 +49,11 @@ public class CotizacionService {
         List<CotMueble> muebles =  cotizacion.getCotMuebles();
 
         if (muebles == null || muebles.isEmpty()){
-    
             throw new IllegalArgumentException("la cotización no tiene items");
-
         }
 
-        PrecioStrategy strategy = new PrecioNormalStrategy();
+        // Ya no necesitamos crear una nueva estrategia aquí, usamos la inyectada:
+        // PrecioStrategy strategy = new PrecioNormalStrategy(); 
 
         int total = 0;
 
@@ -50,13 +61,10 @@ public class CotizacionService {
             if (item.getMueble() == null || item.getMueble().getId_mueble() == 0) {
                 throw new RuntimeException("Todos lo items deben tener un mueble válido");
             }
-
-            int precio_base = item.getMueble().getPrecio_base();
-            int adicional = 0;
-
             
-
-
+            // Reemplazamos la lógica del precio base y adicional para usar el objeto completo Mueble
+            
+            // Línea que causaba el fallo, ahora muebleRepo ya no es null:
             Mueble mueblito = muebleRepo.findById(item.getMueble().getId_mueble())
         .orElseThrow(() -> new RuntimeException("Mueble no encontrado"));
 
@@ -69,14 +77,19 @@ public class CotizacionService {
                 }
             }
 
-            int precioUnitario = calcularPrecioUnitario(mueblito, variante);
-            item.setPrecioUnitario(precioUnitario);
+            // Usamos la lógica de la estrategia (ya corregida en pasos anteriores)
+            int precioBase = mueblito.getPrecio_base();
+            int precioAdicional = (variante != null) ? variante.getPrecioAdicional() : 0;
+            int cantidad = item.getCantidad() <= 0 ? 1 : item.getCantidad();
+            
+            // Usamos la estrategia inyectada
+            int subtotal = this.precioStrategy.calcularPrecio(precioBase, cantidad, precioAdicional); 
 
-            if (item.getCantidad() <= 0) item.setCantidad(1);
-
-
-            int subtotal = precioUnitario * item.getCantidad();
-
+            // Establecer precio unitario (para que el getter getSubtotal() funcione correctamente si es necesario)
+            item.setPrecioUnitario(precioBase + precioAdicional);
+            
+            if (item.getCantidad() <= 0) item.setCantidad(1); // Ya manejado arriba
+            
             item.setCotizacion(cotizacion);
 
             total += subtotal;
@@ -87,16 +100,15 @@ public class CotizacionService {
         Cotizacion saved = cotizacionRepo.save(cotizacion);
 
         return saved;
-
-
     }
 
+    /* 
     private int calcularPrecioUnitario(Mueble mueble, Variantes variante) {
         int precioBase = mueble.getPrecio_base();
         int adicional = (variante != null) ? variante.getPrecioAdicional() : 0;
         return precioBase + adicional;
     }
-
+    */
     public Cotizacion getCotizacionById(int id) {
         return cotizacionRepo.findById(id).orElse(null);
     }
