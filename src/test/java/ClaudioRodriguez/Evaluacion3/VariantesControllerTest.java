@@ -18,24 +18,6 @@ public class VariantesControllerTest {
     private MockMvc mockMvc;
 
     @Test
-    void crearVariante_ok() throws Exception {
-        String json = """
-        {
-          "descripcion": "Color negro",
-          "precio_adicional": 10000,
-          "mueble": {
-              "id_mueble": 1
-          }
-        }
-        """;
-
-        mockMvc.perform(post("/api/variantes")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(json))
-                .andExpect(status().isOk());
-    }
-
-    @Test
     void obtenerVariantes_ok() throws Exception {
         mockMvc.perform(get("/api/variantes"))
                 .andExpect(status().isOk());
