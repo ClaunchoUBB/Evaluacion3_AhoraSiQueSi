@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Sistema Rápido</title>
+    <style>
+        /* Un poquito de estilo para que no te sangren los ojos */
+        body { font-family: sans-serif; padding: 20px; }
+        section { border: 1px solid #000; padding: 10px; margin-bottom: 20px; }
+        table, th, td { border: 1px solid black; border-collapse: collapse; padding: 5px; }
+    </style>
+</head>
+<body>
+
+    <h1>Panel de Control (Modo Rápido)</h1>
+
+    <section>
+        <h2>1. Gestión de Muebles</h2>
+        
+        <div>
+            <label>Nombre:</label>
+            <input type="text" id="nombreMueble" placeholder="Ej: Silla">
+            <label>Precio:</label>
+            <input type="number" id="precioMueble" placeholder="Ej: 5000">
+            <button onclick="crearMueble()">Guardar Mueble</button>
+        </div>
+        <br>
+
+        <h3>Lista de Muebles</h3>
+        <button onclick="cargarMuebles()">Actualizar Lista</button>
+        <br><br>
+        <table id="tablaMuebles">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Nombre</th>
+                    <th>Precio</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody>
+                </tbody>
+        </table>
+    </section>
+
+    <section>
+        <h2>2. Ver Cotizaciones</h2>
+        <button onclick="cargarCotizaciones()">Cargar Cotizaciones</button>
+        <br><br>
+        <ul id="listaCotizaciones"></ul>
+    </section>
+
+    <script>
+        // URLS de tu API
+        const URL_MUEBLES = '/api/muebles';
+        const URL_COTIZACIONES = '/api/cotizaciones';
+
+        // --- FUNCIONES MUEBLES ---
+
+        // 1. Cargar Muebles (GET)
+        function cargarMuebles() {
+            fetch(URL_MUEBLES)
+                .then(response => response.json())
+                .then(data => {
+                    const tbody = document.querySelector("#tablaMuebles tbody");
+                    tbody.innerHTML = ""; // Limpiar tabla
+
+                    data.forEach(mueble => {
+                        tbody.innerHTML += `
+                            <tr>
+                                <td>${mueble.id}</td>
+                                <td>${mueble.nombre}</td>
+                                <td>${mueble.precio}</td>
+                                <td>
+                                    <button onclick="borrarMueble(${mueble.id})" style="color:red">X</button>
+                                </td>
+                            </tr>
+                        `;
+                    });
+                })
+                .catch(err => alert("Error cargando muebles: " + err));
+        }
+
+        // 2. Crear Mueble (POST)
+        function crearMueble() {
+            const nombre = document.getElementById("nombreMueble").value;
+            const precio = document.getElementById("precioMueble").value;
+
+            const muebleObj = {
+                nombre: nombre,
+                precio: parseFloat(precio)
+            };
+
+            fetch(URL_MUEBLES, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(muebleObj)
+            })
+            .then(response => {
+                if(response.ok) {
+                    alert("¡Mueble creado!");
+                    cargarMuebles(); // Recargar la tabla
+                    // Limpiar inputs
+                    document.getElementById("nombreMueble").value = "";
+                    document.getElementById("precioMueble").value = "";
+                } else {
+                    alert("Error al guardar");
+                }
+            });
+        }
+
+        // 3. Borrar Mueble (DELETE)
+        function borrarMueble(id) {
+            if(!confirm("¿Borrar ID " + id + "?")) return;
+
+            fetch(URL_MUEBLES + "/" + id, { method: "DELETE" })
+                .then(res => {
+                    cargarMuebles();
+                });
+        }
+
+        // --- FUNCIONES COTIZACIONES ---
+
+        // 4. Cargar Cotizaciones (GET)
+        function cargarCotizaciones() {
+            fetch(URL_COTIZACIONES)
+                .then(res => res.json())
+                .then(data => {
+                    const lista = document.getElementById("listaCotizaciones");
+                    lista.innerHTML = "";
+                    
+                    if(data.length === 0) {
+                        lista.innerHTML = "<li>No hay cotizaciones</li>";
+                        return;
+                    }
+
+                    data.forEach(c => {
+                        // Muestra el ID y cuantos muebles tiene
+                        let totalMuebles = c.cotMuebles ? c.cotMuebles.length : 0;
+                        lista.innerHTML += `<li>Cotización ID: <b>${c.id}</b> - Items: ${totalMuebles}</li>`;
+                    });
+                });
+        }
+
+        // Cargar datos al iniciar la página
+        cargarMuebles();
+    </script>
+
+</body>
+</html>
