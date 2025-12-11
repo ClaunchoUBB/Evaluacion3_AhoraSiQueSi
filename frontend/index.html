@@ -20,9 +20,11 @@
 
     <div class="card border-primary">
         <div class="card-header bg-primary text-white">
-            <h3>📝 1. Crear Nuevo Mueble (POST /mueble)</h3>
+            <h3>Gestión de Muebles (POST y GET /mueble)</h3>
         </div>
         <div class="card-body">
+            
+            <h4>Crear Nuevo Mueble</h4>
             <form id="formCrearMueble">
                 <div class="row">
                     <div class="col-md-6 mb-3">
@@ -62,3 +64,52 @@
                     </div>
                     <div class="col-md-6 mb-3">
                         <label for="muebleTamano" class="form-label">Tamaño (EnumTamano)</label>
+                        <select class="form-select" id="muebleTamano" required>
+                            <option value="PEQUENO">PEQUEÑO</option>
+                            <option value="MEDIANO" selected>MEDIANO</option>
+                            <option value="GRANDE">GRANDE</option>
+                        </select>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-primary">Crear Mueble</button>
+            </form>
+
+            <h4 class="mt-5">Listado de Muebles</h4>
+            <button class="btn btn-info mb-3" id="btnCargarMuebles">Cargar Muebles Existentes</button>
+            <div id="mueblesListContainer">
+                </div>
+        </div>
+    </div>
+
+    <div class="card border-success">
+        <div class="card-header bg-success text-white">
+            <h3> </h3> Crear nueva Cotización (POST /api/cotizaciones)</h3>
+            <small>Esto requiere al menos un CotMueble asociado.</small>
+        </div>
+        <div class="card-body">
+            <form id="formCrearCotizacion">
+                <p>**Ítem de Cotización (CotMueble):**</p>
+                <div class="row mb-3">
+                    <div class="col-md-3">
+                        <label for="cotiMuebleId" class="form-label">ID Mueble Existente</label>
+                        <input type="number" class="form-control" id="cotiMuebleId" value="1" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="cotiCantidad" class="form-label">Cantidad</label>
+                        <input type="number" class="form-control" id="cotiCantidad" value="2" required>
+                    </div>
+                    <div class="col-md-3">
+                        <label for="cotiVarianteId" class="form-label">ID Variante</label>
+                        <input type="number" class="form-control" id="cotiVarianteId" value="1" required>
+                        <small class="form-text text-muted">Asegúrese que la variante exista.</small>
+                    </div>
+                </div>
+                <button type="submit" class="btn btn-success">Crear Cotización</button>
+            </form>
+        </div>
+    </div>
+
+    <div class="card border-danger">
+        <div class="card-header bg-danger text-white">
+            <h3> confirmar venta (POST /api/ventas/{id}/confirmar)</h3>
+            <small>Convierte una Cotización

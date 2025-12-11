@@ -90,18 +90,14 @@ public class CotizacionControllerTest {
         .contentType(MediaType.APPLICATION_JSON)
         .content(json))
         .andExpect(status().isOk())
-        // 1. Verifica que se creó el ID de cotización
         .andExpect(jsonPath("$.id_cotizacion").exists())
         .andExpect(jsonPath("$.id_cotizacion", greaterThan(0)))
-        // 2. Verifica el precio unitario del item (Base + Adicional)
         .andExpect(jsonPath("$.cotMuebles[0].precioUnitario").value(PRECIO_BASE_MUEBLE + PRECIO_ADICIONAL_VARIANTE))
-        // 3. Verifica el TOTAL calculado por la estrategia: (10000 + 5000) * 3 = 45000
         .andExpect(jsonPath("$.total").value(PRECIO_ESPERADO));
   }
 
   @Test
   void crearCotizacion_sinVariante_ok() throws Exception {
-    // Precio esperado: 10000 * 2 = 20000
     int cantidad = 2;
     int totalEsperado = PRECIO_BASE_MUEBLE * cantidad;
 

@@ -1,0 +1,45 @@
+version: '3.8'
+
+services:
+  db:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD:
+      MYSQL_DATABASE: muebles_hermanos
+      MYSQL_USER: root
+      MYSQL_PASSWORD:
+    ports:
+      - "3307:3306" 
+    volumes:
+      -./muebles_hermanos.sql:/docker-entrypoint-initdb.d/muebles_hermanos.sql
+      - db_data:/var/lib/mysql
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db 
+    environment:
+      # Conexión al servicio 'db'
+      SPRING_DATASOURCE_URL: ${MYSQL_URL}
+      SPRING_DATASOURCE_USERNAME: ${MYSQL_USER}
+      SPRING_DATASOURCE_PASSWORD: ${MYSQL_PASS}
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update 
+
+  frontend:
+    build:
+      context: ./frontend 
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - "80:80" 
+    depends_on:
+      - backend 
+
+volumes:
+  db_data:
