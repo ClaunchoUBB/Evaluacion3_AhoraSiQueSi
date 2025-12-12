@@ -39,7 +39,7 @@ CREATE TABLE IF NOT EXISTS cot_mueble (
     id_Cot_Mueble INT PRIMARY KEY AUTO_INCREMENT,
     id_Cotizacion INT,
     id_Mueble INT NOT NULL,
-    id_Variante INT NOT NULL,
+    id_Variante INT,
     cantidad INT DEFAULT 1,
     precio_unitario INT,
     CONSTRAINT fk_cotmueble_cotizacion 

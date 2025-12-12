@@ -2,6 +2,8 @@ package ClaudioRodriguez.Evaluacion3;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,11 +44,45 @@ public class CotMuebleServiceTest {
         cotMueble.setMueble(muebleServ.saveMueble(mueblito));
         cotMueble.setVariante(varServ.saveVariante(var));
         cotMueble.setPrecioUnitario();
+        assertTrue(cotMueble.getPrecioUnitario() > 0, "El precio unitario debe ser positivo y calculado correctamente.");
         cotMueble.setCantidad(4);
         cotMueble.setCotizacion(cotServ.saveCotizacion(cot));
-        assertNotNull(cotMueble.getVariante().getIdVariante());
+        assertNotNull(cotMueble.getVariante().getIdVariante(), "La variante debe tener un ID generado.");
+
         servicio.saveCotMueble(cotMueble);
         assertEquals(servicio.getCotMuebleById(cotMueble.getIdCotMueble()), cotMueble);
     }
+    
+
+    @Test
+    void borrarCotMueble(){
+        Mueble mueblito = MuebleServiceTest.buildMueble();
+        Variante var = VariantesServiceTest.buildVariante();
+        Cotizacion cot = CotizacionServiceTest.buildCotizacion();
+        
+        Mueble muebleGuardado = muebleServ.saveMueble(mueblito);
+        Variante varGuardada = varServ.saveVariante(var);
+        Cotizacion cotGuardada = cotServ.saveCotizacion(cot);
+
+        CotMueble cotMueble = new CotMueble();
+        cotMueble.setMueble(muebleGuardado);
+        cotMueble.setVariante(varGuardada);
+        cotMueble.setCotizacion(cotGuardada);
+        cotMueble.setPrecioUnitario();
+        cotMueble.setCantidad(2);
+        
+        servicio.saveCotMueble(cotMueble);
+        
+        assertNotNull(servicio.getCotMuebleById(cotMueble.getIdCotMueble()), 
+                      "El CotMueble debe existir antes de la eliminación.");
+        
+        int idABorrar = cotMueble.getIdCotMueble();
+        
+        servicio.deleteCotMueble(idABorrar); 
+        
+        assertNull(servicio.getCotMuebleById(idABorrar), 
+                   "El CotMueble no debe encontrarse después de la eliminación.");
+    }
+
     
 }

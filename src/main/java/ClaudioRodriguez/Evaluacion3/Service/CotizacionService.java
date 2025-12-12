@@ -14,19 +14,28 @@ import java.util.Optional;
 public class CotizacionService {
     @Autowired
     private CotizacionRepository cotizacionRepo;
-
     public List<Cotizacion> getAllCotizaciones() {
         return cotizacionRepo.findAll();
-    }    
+    }
 
-    public Cotizacion saveCotizacion(Cotizacion cotizacion){
+    public Cotizacion saveCotizacion(Cotizacion cotizacion) {
         List<CotMueble> items = cotizacion.getCotMuebles();
         int tt = 0;
         for (CotMueble cotMueble : items) {
-            tt = cotMueble.getCantidad()*cotMueble.getPrecioUnitario();
+            tt = cotMueble.getCantidad() * cotMueble.getPrecioUnitario();
         }
         cotizacion.setTotal(tt);
         return cotizacionRepo.save(cotizacion);
+    }
+
+    public Cotizacion calcularTotal(Cotizacion cotizacion) {
+        List<CotMueble> items = cotizacion.getCotMuebles();
+        int tt = 0;
+        for (CotMueble cotMueble : items) {
+            tt += cotMueble.getCantidad() * cotMueble.getPrecioUnitario();
+        }
+        cotizacion.setTotal(tt);
+        return cotizacion;
     }
 
     public Cotizacion getCotizacionById(int id) {

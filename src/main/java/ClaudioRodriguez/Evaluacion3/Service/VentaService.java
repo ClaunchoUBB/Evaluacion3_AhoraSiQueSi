@@ -4,6 +4,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ClaudioRodriguez.Evaluacion3.Entity.CotMueble;
@@ -16,9 +17,11 @@ import ClaudioRodriguez.Evaluacion3.Repository.VentaRepository;
 
 @Service
 public class VentaService {
-
+    @Autowired
     private VentaRepository ventaRepo;
+    @Autowired
     private MuebleRepository muebleRepo;
+    @Autowired
     private CotizacionRepository cotizacionRepo;
 
     public List<Venta> getAllVentas() {

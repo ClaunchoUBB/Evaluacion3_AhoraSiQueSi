@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,7 +22,7 @@ import jakarta.persistence.Table;
 public class Cotizacion {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int id_cotizacion;
+    private int idCotizacion;
 
     @Column(name = "fecha_cotizacion", insertable = false, updatable =  false)
     private LocalDateTime fecha_cotizacion;
@@ -29,19 +30,19 @@ public class Cotizacion {
     @Column(name = "total")
     private int total;
 
-    @OneToMany(mappedBy = "cotizacion")
+    @OneToMany(mappedBy = "cotizacion", cascade =CascadeType.ALL, orphanRemoval = true)
     @JsonIgnore
-    private List<CotMueble> cotMueble = new ArrayList<CotMueble>();
+    private List<CotMueble> items = new ArrayList<CotMueble>();
 
     @OneToOne(mappedBy = "cotizacion")
     private Venta venta;
 
-    public int getId_cotizacion() {
-        return id_cotizacion;
+    public int getIdCotizacion() {
+        return idCotizacion;
     }
 
-    public void setId_cotizacion(int id_cotizacion) {
-        this.id_cotizacion = id_cotizacion;
+    public void setIdCotizacion(int id_cotizacion) {
+        this.idCotizacion = id_cotizacion;
     }
 
     public LocalDateTime getFecha_cotizacion() {
@@ -69,11 +70,11 @@ public class Cotizacion {
     }
 
     public List<CotMueble> getCotMuebles() {
-        return cotMueble;
+        return items;
     }
 
     public void setCotMuebles(List<CotMueble> cotMueble) {
-        this.cotMueble = cotMueble;
+        this.items = cotMueble;
     }
 
     

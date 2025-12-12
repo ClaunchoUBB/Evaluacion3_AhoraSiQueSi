@@ -20,7 +20,7 @@ public class VariantesServiceTest {
     protected static Variante buildVariante() {
         Variante retorno = new Variante();
         retorno.setDescripcion("Variante de testeo");
-        retorno.setPrecioAdicional(69);
+        retorno.setPrecioAdicional(100);
         return retorno;
     }
 
