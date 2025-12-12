@@ -37,7 +37,6 @@ public class VariantesService {
         Optional<Variante> existente = variantesRepo.findById(id);
         if (existente.isPresent()) {
             Variante varianteExistente = existente.get();
-            varianteExistente.setMueble(reemplazo.getMueble());
             varianteExistente.setDescripcion(reemplazo.getDescripcion());
             varianteExistente.setPrecioAdicional(reemplazo.getPrecioAdicional());
             return variantesRepo.save(varianteExistente);

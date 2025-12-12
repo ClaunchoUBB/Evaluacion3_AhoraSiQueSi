@@ -17,16 +17,16 @@ import jakarta.persistence.Table;
 public class CotMueble {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_Cot_Mueble")
+    @Column(name = "id_Cot_Mueble")
     private int idCotMueble;
 
     @ManyToOne
-    @JoinColumn(name = "ID_Cotizacion")
+    @JoinColumn(name = "Cotizacion")
     @JsonIgnore
     private Cotizacion cotizacion;
 
     @ManyToOne
-    @JoinColumn(name = "ID_Mueble")
+    @JoinColumn(name = "id_Mueble")
     private Mueble mueble;
 
     @Column(name = "cantidad")
@@ -36,7 +36,7 @@ public class CotMueble {
     private int precioUnitario;
 
     @ManyToOne
-    @JoinColumn (name = "ID_Variante")
+    @JoinColumn (name = "id_Variante")
     private Variante variante;
 
 

@@ -2,7 +2,6 @@ package ClaudioRodriguez.Evaluacion3.Entity;
 
 import java.time.LocalDateTime;
 
-import org.hibernate.annotations.ManyToAny;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,7 +9,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -20,7 +19,7 @@ public class Venta {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_venta")
+    @Column(name = "id_venta")
     private int id_venta;
 
     @Column(name = "fecha_venta")
@@ -29,8 +28,8 @@ public class Venta {
     @Column(name = "total_venta")
     private int total_venta;
 
-    @ManyToOne  
-    @JoinColumn(name = "ID_Cotizacion")
+    @OneToOne 
+    @JoinColumn(name = "id_Cotizacion")
     private Cotizacion cotizacion;
 
     public int getId_venta() {

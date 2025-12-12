@@ -12,6 +12,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -32,7 +33,7 @@ public class Cotizacion {
     @JsonIgnore
     private List<CotMueble> cotMueble = new ArrayList<CotMueble>();
 
-    @OneToMany(mappedBy = "cotizacion")
+    @OneToOne(mappedBy = "cotizacion")
     private Venta venta;
 
     public int getId_cotizacion() {
@@ -63,8 +64,8 @@ public class Cotizacion {
         return venta;
     }
 
-    public void setVenta(Venta Venta) {
-        this.venta = Venta;
+    public void setVenta(Venta venta) {
+        this.venta = venta;
     }
 
     public List<CotMueble> getCotMuebles() {

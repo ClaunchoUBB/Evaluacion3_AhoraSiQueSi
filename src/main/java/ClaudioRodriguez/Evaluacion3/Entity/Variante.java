@@ -1,15 +1,11 @@
 package ClaudioRodriguez.Evaluacion3.Entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -18,13 +14,8 @@ import jakarta.persistence.Table;
 public class Variante {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_variante")
+    @Column(name = "id_variante")
     private int idVariante;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "ID_mueble")
-    @JsonIgnore
-    private Mueble mueble;
 
     @Column(name = "descripcion")
     private String descripcion;
@@ -41,13 +32,6 @@ public class Variante {
         this.idVariante = idVariante;
     }
 
-    public Mueble getMueble() {
-        return mueble;
-    }
-
-    public void setMueble(Mueble mueble) {
-        this.mueble = mueble;
-    }
 
     public String getDescripcion() {
         return descripcion;

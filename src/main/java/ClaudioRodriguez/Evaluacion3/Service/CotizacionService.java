@@ -1,13 +1,11 @@
 package ClaudioRodriguez.Evaluacion3.Service;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import ClaudioRodriguez.Evaluacion3.Entity.CotMueble;
 import ClaudioRodriguez.Evaluacion3.Entity.Cotizacion;
 import ClaudioRodriguez.Evaluacion3.Entity.Mueble;
 import ClaudioRodriguez.Evaluacion3.Entity.Variante;
-import ClaudioRodriguez.Evaluacion3.Estrategias.PrecioNormalStrategy;
 import ClaudioRodriguez.Evaluacion3.Estrategias.PrecioStrategy;
 import ClaudioRodriguez.Evaluacion3.Repository.CotizacionRepository;
 import ClaudioRodriguez.Evaluacion3.Repository.MuebleRepository;
@@ -55,10 +53,6 @@ public class CotizacionService {
                 variante = variantesRepo.findById(item.getVariante().getIdVariante())
                         .orElseThrow(() -> new RuntimeException(
                                 "Variante no encontrada id=" + item.getVariante().getIdVariante()));
-                if (variante.getMueble() == null || variante.getMueble().getId_mueble() != mueblito.getId_mueble()) {
-                    throw new RuntimeException("La variante id=" + variante.getIdVariante()
-                            + " no pertenece al mueble id=" + mueblito.getId_mueble());
-                }
             }
 
             int precioBase = mueblito.getPrecio_base();

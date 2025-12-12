@@ -6,6 +6,6 @@ import jakarta.transaction.Transactional;
 
 @SpringBootTest
 @Transactional
-public class VariantesControllerTest {
-
+public class VentaServiceTest {
+    
 }

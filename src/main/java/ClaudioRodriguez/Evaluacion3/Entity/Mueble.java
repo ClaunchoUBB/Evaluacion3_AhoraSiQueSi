@@ -19,15 +19,12 @@ import jakarta.persistence.Table;
 public class Mueble {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ID_Mueble")
+    @Column(name = "id_Mueble")
     private int id_mueble;
 
     @OneToMany(mappedBy = "mueble")
     @JsonIgnore
     private List<CotMueble> cotMuebles = new ArrayList<>();
-
-    @OneToMany(mappedBy = "mueble")
-    private List<Variante> variantes = new ArrayList<>();
 
     @Column(name = "nombre_mueble")
     private String nombre_mueble;
@@ -113,14 +110,6 @@ public class Mueble {
 
     public void setTamano(EnumTamano tamano) {
         this.tamano = tamano;
-    }
-
-    public List<Variante> getVariantes() {     
-        return variantes;
-    }
-
-    public void setVariantes(List<Variante> variantes) {
-        this.variantes = variantes;
     }
 
     public List<CotMueble> getCotMuebles() {
