@@ -38,41 +38,41 @@ public class VentaServiceTest {
     private CotMuebleService cmServ;
 
     @Test
-void confirmarVenta_StockInsuficiente() {
-    
-    Mueble muebleOriginal = MuebleServiceTest.buildMueble();
-    muebleOriginal.setStock(5);
-    muebleOriginal.setNombre_mueble("Sillón Test");
-    Mueble muebleGuardado = muebleServ.saveMueble(muebleOriginal);
+    void confirmarVenta_StockInsuficiente() {
 
-    Variante varGuardada = varServ.saveVariante(VariantesServiceTest.buildVariante());
-    Cotizacion cotGuardada = cotServ.saveCotizacion(CotizacionServiceTest.buildCotizacion());
+        Mueble muebleOriginal = MuebleServiceTest.buildMueble();
+        muebleOriginal.setStock(5);
+        muebleOriginal.setNombre_mueble("Sillón Test");
+        Mueble muebleGuardado = muebleServ.saveMueble(muebleOriginal);
 
-    int cantidadSolicitada = 10;
-    CotMueble item = new CotMueble();
-    item.setMueble(muebleGuardado);
-    item.setVariante(varGuardada);
-    item.setCantidad(cantidadSolicitada);
-    item.setPrecioUnitario();
-    item.setCotizacion(cotGuardada);
+        Variante varGuardada = varServ.saveVariante(VariantesServiceTest.buildVariante());
+        Cotizacion cotGuardada = cotServ.saveCotizacion(CotizacionServiceTest.buildCotizacion());
 
-    cotGuardada.getCotMuebles().add(item); 
-    
-    cmServ.saveCotMueble(item);
+        int cantidadSolicitada = 10;
+        CotMueble item = new CotMueble();
+        item.setMueble(muebleGuardado);
+        item.setVariante(varGuardada);
+        item.setCantidad(cantidadSolicitada);
+        item.setPrecioUnitario();
+        item.setCotizacion(cotGuardada);
 
-    cotServ.calcularTotal(cotGuardada);
-    cotServ.saveCotizacion(cotGuardada);
-    Exception exception = assertThrows(RuntimeException.class, () -> {
-        servicio.confirmarVenta(cotGuardada.getIdCotizacion()); 
-    });
-    
-    String expectedMessage = "Stock insuficiente para mueble 'Sillón Test'. Stock disponible: 5 — solicitado: 10";
-    assertEquals(expectedMessage, exception.getMessage(),
-            "Debe lanzar una RuntimeException con el mensaje de stock insuficiente que incluye los detalles.");
+        cotGuardada.getCotMuebles().add(item);
 
-    Mueble muebleDespuesFallo = muebleServ.getMuebleById(muebleGuardado.getId_mueble());
-    assertEquals(5, muebleDespuesFallo.getStock(), "El stock NO debe haber sido modificado tras el fallo.");
-}
+        cmServ.saveCotMueble(item);
+
+        cotServ.calcularTotal(cotGuardada);
+        cotServ.saveCotizacion(cotGuardada);
+        Exception exception = assertThrows(RuntimeException.class, () -> {
+            servicio.confirmarVenta(cotGuardada.getIdCotizacion());
+        });
+
+        String expectedMessage = "Stock insuficiente para mueble 'Sillón Test'. Stock disponible: 5 — solicitado: 10";
+        assertEquals(expectedMessage, exception.getMessage(),
+                "Debe lanzar una RuntimeException con el mensaje de stock insuficiente que incluye los detalles.");
+
+        Mueble muebleDespuesFallo = muebleServ.getMuebleById(muebleGuardado.getId_mueble());
+        assertEquals(5, muebleDespuesFallo.getStock(), "El stock NO debe haber sido modificado tras el fallo.");
+    }
 
     @Test
     void confirmarVenta_CotizacionNoEncontrada() {
@@ -84,5 +84,36 @@ void confirmarVenta_StockInsuficiente() {
 
         assertEquals("Cotización no encontrada", exception.getMessage(),
                 "Debe lanzar la excepción correcta para Cotización no encontrada.");
+    }
+
+    @Test
+    void confirmarVenta() {
+        Mueble muebleOriginal = MuebleServiceTest.buildMueble();
+        muebleOriginal.setStock(10);
+        muebleOriginal.setNombre_mueble("Sillón Test");
+        Mueble muebleGuardado = muebleServ.saveMueble(muebleOriginal);
+
+        Variante varGuardada = varServ.saveVariante(VariantesServiceTest.buildVariante());
+        Cotizacion cotGuardada = cotServ.saveCotizacion(CotizacionServiceTest.buildCotizacion());
+
+        int cantidadSolicitada = 1;
+        CotMueble item = new CotMueble();
+        item.setMueble(muebleGuardado);
+        item.setVariante(varGuardada);
+        item.setCantidad(cantidadSolicitada);
+        item.setPrecioUnitario();
+        item.setCotizacion(cotGuardada);
+
+        cotGuardada.getCotMuebles().add(item);
+
+        cmServ.saveCotMueble(item);
+
+        cotServ.calcularTotal(cotGuardada);
+        cotServ.saveCotizacion(cotGuardada);
+        servicio.confirmarVenta(cotGuardada.getIdCotizacion());
+        assertEquals(muebleGuardado.getStock(), 9);
+        
+
+
     }
 }

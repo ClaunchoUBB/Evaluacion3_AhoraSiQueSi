@@ -53,22 +53,19 @@ public class VentaService {
         }
     }
 
-    public Venta confirmarVenta(int idCotizacion) { // La función para confirmar venta está implementada apropiadamente
+    public Venta confirmarVenta(int idCotizacion) {
 
-        Cotizacion cot = cotizacionRepo.findById(idCotizacion) // Busca la cotización que se quiere confirmar
-                .orElseThrow(() -> new RuntimeException("Cotización no encontrada")); // Si no la encuentra lanza error
-
-        if (cot.getCotMuebles() == null || cot.getCotMuebles().isEmpty()) { //
-            throw new RuntimeException("La cotización no tiene muebles"); // Si la cotización está vacía igual tiramos
-                                                                          // excepción
+        Cotizacion cot = cotizacionRepo.findById(idCotizacion) 
+                .orElseThrow(() -> new RuntimeException("Cotización no encontrada"));
+        if (cot.getCotMuebles() == null || cot.getCotMuebles().isEmpty()) { 
+            throw new RuntimeException("La cotización no tiene muebles"); 
         }
 
-        for (CotMueble item : cot.getCotMuebles()) { // Para cada mueble en la cotización
-            Mueble m = muebleRepo.findById(item.getMueble().getId_mueble()) // Traemos la instancia del mueble de la
-                                                                            // cotizacion
-                    .orElseThrow(() -> new RuntimeException("Mueble no encontrado")); // Si no está, excepción
+        for (CotMueble item : cot.getCotMuebles()) { 
+            Mueble m = muebleRepo.findById(item.getMueble().getId_mueble()) 
+                    .orElseThrow(() -> new RuntimeException("Mueble no encontrado"));
 
-            if (m.getStock() < item.getCantidad()) { // Si el stock es menor a la cantidad requerida se lanza excepción
+            if (m.getStock() < item.getCantidad()) { 
                 throw new RuntimeException(
                         "Stock insuficiente para mueble '" + m.getNombre_mueble() +
                                 "'. Stock disponible: " + m.getStock() +
