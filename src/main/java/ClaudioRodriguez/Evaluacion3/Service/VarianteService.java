@@ -12,7 +12,7 @@ import ClaudioRodriguez.Evaluacion3.Entity.Variante;
 import ClaudioRodriguez.Evaluacion3.Repository.VariantesRepository;
 
 @Service
-public class VariantesService {
+public class VarianteService {
 
     @Autowired
     private VariantesRepository variantesRepo;

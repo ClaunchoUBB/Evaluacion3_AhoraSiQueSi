@@ -20,11 +20,11 @@ public class MuebleServiceTest {
   @Autowired
   private MuebleService servicio;
 
-  private Mueble buildMueble(){
+  protected static Mueble buildMueble(){
     Mueble mueblito = new Mueble();
     mueblito.setCotMuebles(null);
     mueblito.setMaterial(EnumMaterial.MADERA);
-    mueblito.setNombre_mueble("Silla");
+    mueblito.setNombre_mueble("Mueble de testeo");
     mueblito.setPrecio_base(20000);
     mueblito.setActivo(true);
     mueblito.setTamano(EnumTamano.GRANDE);

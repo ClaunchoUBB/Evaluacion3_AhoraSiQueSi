@@ -48,7 +48,7 @@ public class CotizacionController {
         
         cotizacion.setCotMuebles(items);
         
-        Cotizacion saved = cotizacionService.createCotizacion(cotizacion);
+        Cotizacion saved = cotizacionService.saveCotizacion(cotizacion);
         
         return ResponseEntity.ok(saved);
     }

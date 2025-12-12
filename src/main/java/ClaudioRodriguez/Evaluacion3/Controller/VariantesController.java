@@ -1,7 +1,7 @@
 package ClaudioRodriguez.Evaluacion3.Controller;
 
 import ClaudioRodriguez.Evaluacion3.Entity.Variante;
-import ClaudioRodriguez.Evaluacion3.Service.VariantesService;
+import ClaudioRodriguez.Evaluacion3.Service.VarianteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +13,7 @@ import java.util.List;
 public class VariantesController {
 
     @Autowired
-    private VariantesService variantesService;
+    private VarianteService variantesService;
 
     @GetMapping
     public List<Variante> getAll() {

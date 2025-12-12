@@ -32,7 +32,6 @@ public class Variante {
         this.idVariante = idVariante;
     }
 
-
     public String getDescripcion() {
         return descripcion;
     }

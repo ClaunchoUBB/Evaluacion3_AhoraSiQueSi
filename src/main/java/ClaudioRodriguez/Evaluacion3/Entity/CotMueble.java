@@ -21,7 +21,7 @@ public class CotMueble {
     private int idCotMueble;
 
     @ManyToOne
-    @JoinColumn(name = "Cotizacion")
+    @JoinColumn(name = "id_Cotizacion")
     @JsonIgnore
     private Cotizacion cotizacion;
 
@@ -80,6 +80,10 @@ public class CotMueble {
         this.precioUnitario = precioUnitario;
     }
 
+    public void setPrecioUnitario(){
+        this.precioUnitario = this.getMueble().getPrecio_base() + this.getVariante().getPrecioAdicional();
+    }
+
     public int getSubtotal() {
         return cantidad * precioUnitario;
     }
@@ -87,7 +91,6 @@ public class CotMueble {
     public Variante getVariante() {
         return variante;
     }
-
 
     public void setVariante(Variante v){
         this.variante = v;

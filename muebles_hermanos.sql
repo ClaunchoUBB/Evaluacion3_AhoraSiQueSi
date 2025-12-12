@@ -37,19 +37,18 @@ CREATE TABLE IF NOT EXISTS variante (
 
 CREATE TABLE IF NOT EXISTS cot_mueble (
     id_Cot_Mueble INT PRIMARY KEY AUTO_INCREMENT,
-    id_Cotizacion INT NOT NULL,
+    id_Cotizacion INT,
     id_Mueble INT NOT NULL,
     id_Variante INT NOT NULL,
     cantidad INT DEFAULT 1,
-    precio_unitario INT, 
-    subtotal int AS (precio_unitario * cantidad) STORED,
+    precio_unitario INT,
     CONSTRAINT fk_cotmueble_cotizacion 
         FOREIGN KEY (id_Cotizacion) 
         REFERENCES cotizacion(id_Cotizacion) ,
     CONSTRAINT fk_cotmueble_mueble 
         FOREIGN KEY (id_Mueble) 
         REFERENCES mueble(id_Mueble) ,
-    CONSTRAINT fk_variantes_cotizacion 
+    CONSTRAINT fk_variante_cotizacion 
         FOREIGN KEY (id_Variante) 
         REFERENCES variante(id_Variante) 
 ) ;
