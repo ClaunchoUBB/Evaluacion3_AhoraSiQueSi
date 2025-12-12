@@ -2,8 +2,8 @@ package ClaudioRodriguez.Evaluacion3.Repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
-import ClaudioRodriguez.Evaluacion3.Entity.Variantes;
+import ClaudioRodriguez.Evaluacion3.Entity.Variante;
 
 @Repository
-public interface VariantesRepository extends JpaRepository<Variantes, Integer> {
+public interface VariantesRepository extends JpaRepository<Variante, Integer> {
 } 

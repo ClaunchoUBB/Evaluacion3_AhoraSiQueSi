@@ -37,7 +37,7 @@ public class CotMueble {
 
     @ManyToOne
     @JoinColumn (name = "ID_Variante")
-    private Variantes variante;
+    private Variante variante;
 
 
     public int getIdCotMueble() {
@@ -84,12 +84,12 @@ public class CotMueble {
         return cantidad * precioUnitario;
     }
 
-    public Variantes getVariante() {
+    public Variante getVariante() {
         return variante;
     }
 
 
-    public void setVariante(Variantes v){
+    public void setVariante(Variante v){
         this.variante = v;
     }
 }

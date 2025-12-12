@@ -27,7 +27,7 @@ public class Mueble {
     private List<CotMueble> cotMuebles = new ArrayList<>();
 
     @OneToMany(mappedBy = "mueble")
-    private List<Variantes> variantes = new ArrayList<>();
+    private List<Variante> variantes = new ArrayList<>();
 
     @Column(name = "nombre_mueble")
     private String nombre_mueble;
@@ -115,11 +115,11 @@ public class Mueble {
         this.tamano = tamano;
     }
 
-    public List<Variantes> getVariantes() {     
+    public List<Variante> getVariantes() {     
         return variantes;
     }
 
-    public void setVariantes(List<Variantes> variantes) {
+    public void setVariantes(List<Variante> variantes) {
         this.variantes = variantes;
     }
 

@@ -1,6 +1,6 @@
 package ClaudioRodriguez.Evaluacion3.Controller;
 
-import ClaudioRodriguez.Evaluacion3.Entity.Variantes;
+import ClaudioRodriguez.Evaluacion3.Entity.Variante;
 import ClaudioRodriguez.Evaluacion3.Service.VariantesService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,24 +16,24 @@ public class VariantesController {
     private VariantesService variantesService;
 
     @GetMapping
-    public List<Variantes> getAll() {
+    public List<Variante> getAll() {
         return variantesService.getAllVariantes();
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<Variantes> getById(@PathVariable int id) {
-        Variantes v = variantesService.getVarianteById(id);
+    public ResponseEntity<Variante> getById(@PathVariable int id) {
+        Variante v = variantesService.getVarianteById(id);
         return (v != null) ? ResponseEntity.ok(v) : ResponseEntity.notFound().build();
     }
 
     @PostMapping
-    public ResponseEntity<Variantes> create(@RequestBody Variantes variante) {
+    public ResponseEntity<Variante> create(@RequestBody Variante variante) {
         return ResponseEntity.ok(variantesService.saveVariante(variante));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<Variantes> update(@PathVariable int id, @RequestBody Variantes reemplazo) {
-        Variantes updated = variantesService.updateVariante(id, reemplazo);
+    public ResponseEntity<Variante> update(@PathVariable int id, @RequestBody Variante reemplazo) {
+        Variante updated = variantesService.updateVariante(id, reemplazo);
         return (updated != null) ? ResponseEntity.ok(updated) : ResponseEntity.notFound().build();
     }
 

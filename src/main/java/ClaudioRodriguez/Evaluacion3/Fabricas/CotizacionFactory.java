@@ -7,9 +7,9 @@ import ClaudioRodriguez.Evaluacion3.Entity.Cotizacion;
 public class CotizacionFactory {
 
     public static Cotizacion crearCotizacionVacia() {
-        Cotizacion c = new Cotizacion();
-        c.setFecha_cotizacion(LocalDateTime.now());
-        c.setTotal(0);
-        return c;
+        Cotizacion cot = new Cotizacion();
+        cot.setFecha_cotizacion(LocalDateTime.now());
+        cot.setTotal(0);
+        return cot;
     }
 }

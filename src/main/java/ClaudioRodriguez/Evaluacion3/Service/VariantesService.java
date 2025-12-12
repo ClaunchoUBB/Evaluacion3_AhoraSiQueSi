@@ -7,7 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
-import ClaudioRodriguez.Evaluacion3.Entity.Variantes;
+import ClaudioRodriguez.Evaluacion3.Entity.Variante;
 
 import ClaudioRodriguez.Evaluacion3.Repository.VariantesRepository;
 
@@ -17,27 +17,26 @@ public class VariantesService {
     @Autowired
     private VariantesRepository variantesRepo;
 
-    public List<Variantes> getAllVariantes() {
+    public List<Variante> getAllVariantes() {
         return variantesRepo.findAll();
     }
 
-    public Variantes saveVariante(Variantes variante) {
+    public Variante saveVariante(Variante variante) {
         return variantesRepo.save(variante);
     }
-
 
     public void deleteVariante(int idVariante) {
         variantesRepo.deleteById(idVariante);
     }
 
-    public Variantes getVarianteById(int idVariante) {
+    public Variante getVarianteById(int idVariante) {
         return variantesRepo.findById(idVariante).orElse(null);
     }
 
-    public Variantes updateVariante(int id, Variantes reemplazo) {
-        Optional<Variantes> existente = variantesRepo.findById(id);
+    public Variante updateVariante(int id, Variante reemplazo) {
+        Optional<Variante> existente = variantesRepo.findById(id);
         if (existente.isPresent()) {
-            Variantes varianteExistente = existente.get();
+            Variante varianteExistente = existente.get();
             varianteExistente.setMueble(reemplazo.getMueble());
             varianteExistente.setDescripcion(reemplazo.getDescripcion());
             varianteExistente.setPrecioAdicional(reemplazo.getPrecioAdicional());

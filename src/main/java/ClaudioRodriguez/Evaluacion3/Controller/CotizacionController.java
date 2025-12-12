@@ -23,39 +23,52 @@ public class CotizacionController {
     @Autowired
     private VentaService ventaService;
 
-    @GetMapping
+    @GetMapping // Mappeo para el método get, entrega todo si no trae indicación de id
     public List<Cotizacion> getAll() {
+        
         return cotizacionService.getAllCotizaciones();
+    
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{id}") // Lo mismo pero lo trae con indicación
     public ResponseEntity<Cotizacion> getById(@PathVariable int id) {
+    
         Cotizacion c = cotizacionService.getCotizacionById(id);
+    
         return (c != null) ? ResponseEntity.ok(c) : ResponseEntity.notFound().build();
+    
     }
 
-    @PostMapping
-    public ResponseEntity<Cotizacion> create(@RequestBody Cotizacion input) {
+    @PostMapping // El posteo base es crear una cotización a partir de un input que es el Json
+    public ResponseEntity<Cotizacion> create(@RequestBody Cotizacion cot) {
 
         Cotizacion cotizacion = CotizacionFactory.crearCotizacionVacia();
 
-        List<CotMueble> items = input.getCotMuebles();
+        List<CotMueble> items = cot.getCotMuebles();
+        
         cotizacion.setCotMuebles(items);
-
+        
         Cotizacion saved = cotizacionService.createCotizacion(cotizacion);
-
+        
         return ResponseEntity.ok(saved);
     }
 
     @PostMapping("/{id}/confirmar")
     public ResponseEntity<Venta> confirmar(@PathVariable int id) {
+
         Venta venta = ventaService.confirmarVenta(id);
+        
         return ResponseEntity.ok(venta);
+    
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable int id) {
+    
         cotizacionService.deleteCotizacion(id);
+        
         return ResponseEntity.noContent().build();
+    
     }
+
 }
